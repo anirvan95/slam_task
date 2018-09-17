@@ -1,0 +1,18 @@
+
+<launch>
+	<!-- Local (odom) instance -->
+	<node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization_local" output="screen">
+		<rosparam command="load" file="$(find slam_kthsdv)/config/ekf_localization.yaml" />
+	</node>
+	<node pkg="slam_kthsdv" name="robotsense_publisher" type="robotsense_publisher.py" output="screen" >
+	</node>
+	<node pkg="tf2_ros" type="static_transform_publisher" name="map_global" args="0 0 0 0 0 0 1 map odom" />
+	<!-- Global (odom) instance -->
+	<node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization_global" output="screen">
+		<rosparam command="load" file="$(find slam_kthsdv)/config/ekf_localization_global.yaml" />
+	</node>
+	<node pkg="rviz" type="rviz" name="rviz" output="screen" args="-d $(find slam_kthsdv)/config/rviz.rviz">
+	</node>
+
+	
+</launch>
